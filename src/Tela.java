@@ -27,21 +27,137 @@ public class Tela extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txa_mercado = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        text_field_codigo = new javax.swing.JTextField();
+        bt_comprar = new javax.swing.JButton();
+        bt_vender = new javax.swing.JButton();
+        label_saldo = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txa_portfolio = new javax.swing.JTextArea();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 36)); // NOI18N
+        jLabel1.setText("Faria Lima Simulator");
+
+        jLabel2.setFont(new java.awt.Font("sansserif", 0, 36)); // NOI18N
+        jLabel2.setText("Mercado");
+
+        jLabel3.setFont(new java.awt.Font("sansserif", 0, 36)); // NOI18N
+        jLabel3.setText("Portoflio");
+
+        txa_mercado.setColumns(20);
+        txa_mercado.setRows(5);
+        jScrollPane1.setViewportView(txa_mercado);
+
+        jLabel4.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        jLabel4.setText("Comprar/Vender");
+
+        jLabel5.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        jLabel5.setText("Codigo:");
+
+        text_field_codigo.setText("XXXX");
+        text_field_codigo.addActionListener(this::text_field_codigoActionPerformed);
+
+        bt_comprar.setText("C");
+        bt_comprar.addActionListener(this::bt_comprarActionPerformed);
+
+        bt_vender.setText("V");
+        bt_vender.addActionListener(this::bt_venderActionPerformed);
+
+        label_saldo.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        label_saldo.setText("Saldo: R$XXXX.X");
+
+        txa_portfolio.setColumns(20);
+        txa_portfolio.setRows(5);
+        jScrollPane2.setViewportView(txa_portfolio);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 697, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(310, 310, 310))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(text_field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(bt_comprar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(bt_vender, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(label_saldo)
+                                .addGap(165, 165, 165))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(95, 95, 95))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(211, 211, 211))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 544, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1)
+                .addGap(89, 89, 89)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(text_field_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bt_comprar)
+                            .addComponent(bt_vender))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label_saldo))
+                    .addComponent(jScrollPane1))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void text_field_codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_field_codigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_field_codigoActionPerformed
+
+    private void bt_comprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_comprarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_comprarActionPerformed
+
+    private void bt_venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_venderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_venderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -69,5 +185,18 @@ public class Tela extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_comprar;
+    private javax.swing.JButton bt_vender;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel label_saldo;
+    private javax.swing.JTextField text_field_codigo;
+    private javax.swing.JTextArea txa_mercado;
+    private javax.swing.JTextArea txa_portfolio;
     // End of variables declaration//GEN-END:variables
 }
