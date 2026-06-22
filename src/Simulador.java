@@ -21,7 +21,7 @@ public class Simulador
     {
         mercado.put("IFRS", new Acao("IFRS", "Instituto Federal do RS", 50.0f));
         mercado.put("UFFS", new Acao("UFFS", "Universidade Fed. Front. Sul.", 25.0f));
-        mercado.put("AUTH", new Acao("AUTE", "Autentique Assinaturas", 7.0f));
+        mercado.put("AUTE", new Acao("AUTE", "Autentique Assinaturas", 7.0f));
     }
     
     public void atualizarMercado()

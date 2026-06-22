@@ -15,7 +15,7 @@ public class Acao
     
     public void atualizarPreco()
     {
-        double min = ThreadLocalRandom.current().nextDouble(-0.1f, -6.7f);
+        double min = ThreadLocalRandom.current().nextDouble(-6.7f, -0.1f);
         double max = ThreadLocalRandom.current().nextDouble(0.0f, 6.7f);
         
         double mudanca = ThreadLocalRandom.current().nextDouble(min, max + 1);
