@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -7,12 +8,26 @@ public class Tela extends javax.swing.JFrame
 { 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Tela.class.getName());
     
-    private Simulador simulador = new Simulador(5000.0f);
+    private static Simulador simulador = new Simulador(5000.0f);
     
     private void inicializar_UI()
     {
         label_saldo.setText("Saldo: R$" + String.format("%.2f", simulador.getSaldo()));
         label_dia.setText("Dia atual: " + simulador.getDiaAtual());
+    }
+    
+    private void mostrar_mercado()
+    {
+        txa_mercado.setText("");
+        
+        label_dia.setText("Dia atual: " + simulador.getDiaAtual());
+                
+        // listar acoes do mercado
+        for (Acao a : simulador.getMercado().values())
+        {
+            String texto = a.getCodigo() + " - " + a.getNome() + "\t" + String.format("R$%.2f", a.getPreco());
+            txa_mercado.append(texto + "\n");
+        }
     }
     
     private void mostrar_portfolio()
@@ -27,32 +42,13 @@ public class Tela extends javax.swing.JFrame
     }
 
     public Tela() 
-    {
+    {   
         initComponents();
         
         simulador.inicializarMercado();
+        mostrar_mercado();
         
         inicializar_UI();
-        
-        // ATUALIZAR MERCADO
-        btn_atualizar_mercado.addActionListener( new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                simulador.atualizarMercado();
-                
-                label_dia.setText("Dia atual: " + simulador.getDiaAtual());
-                
-                txa_mercado.setText("");
-                
-                // listar acoes do mercado
-                for (Acao a : simulador.getMercado().values())
-                {
-                    String texto = a.getCodigo() + " - " + a.getNome() + "\t" + String.format("R$%.2f", a.getPreco());
-                    txa_mercado.append(texto + "\n");
-                }
-            }
-        });
         
         // COMPRA
         btn_comprar.addActionListener( new ActionListener(){
@@ -62,13 +58,14 @@ public class Tela extends javax.swing.JFrame
                 try
                 {
                     String cod = tfd_codigo.getText();
-                    Integer quant = Integer.parseInt(tfd_quantidade.getText());
-                    
+
                     if (cod.isEmpty())
                         throw new Exception("O campo codigo nao pode ser nulo");
                     
                     if (tfd_quantidade.getText().isEmpty())
                         throw new Exception("O campo quantidade nao pode ser nulo");
+                    
+                    Integer quant = Integer.parseInt(tfd_quantidade.getText());
                         
                     if (quant < 1)
                         throw new Exception("A quantidade deve ser maior que 1");
@@ -95,13 +92,14 @@ public class Tela extends javax.swing.JFrame
                 try
                 {
                     String cod = tfd_codigo.getText();
-                    Integer quant = Integer.parseInt(tfd_quantidade.getText());
-                    
+ 
                     if (cod.isEmpty())
                         throw new Exception("O campo codigo nao pode ser nulo");
                     
                     if (tfd_quantidade.getText().isEmpty())
                         throw new Exception("O campo quantidade nao pode ser nulo");
+                    
+                    Integer quant = Integer.parseInt(tfd_quantidade.getText());
                         
                     if (quant < 1)
                         throw new Exception("A quantidade deve ser maior que 1");
@@ -114,14 +112,46 @@ public class Tela extends javax.swing.JFrame
                 }
                 finally
                 {
+                    mostrar_portfolio();
                     label_saldo.setText("Saldo: R$" + String.format("%.2f", simulador.getSaldo()));
                 }
             }
         });
         
-        
-        
+        // atualizar mercado dinamicamente
+        javax.swing.Timer timer_dias = new javax.swing.Timer(100, new ActionListener() {
+            private long acumulador_dia     = 0; // para atualizar o dia a cada 24 segundos e mudar o mercado
+            private long acumulador_segundo = 0; // para atualizar o relogio de 1 em 1 segundo
+            
+            private long ultimo_tick = System.currentTimeMillis();
+            
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                long agora = System.currentTimeMillis();
+                long dt = agora - ultimo_tick;
+                ultimo_tick = agora;
                 
+                acumulador_dia     += dt;
+                acumulador_segundo += dt;
+                
+                if (acumulador_segundo > 1 * 1000)
+                {
+                    label_relogio.setText("Relogio: " + Long.toString(acumulador_dia / 1000) + "/24h");
+                    acumulador_segundo = 0;
+                }
+                        
+                if (acumulador_dia > 24 * 1000)
+                {
+                    simulador.atualizarMercado();
+                    
+                    mostrar_mercado();
+                    
+                    acumulador_dia = 0;
+                }
+            }
+        });
+        timer_dias.start();        
     }
 
     @SuppressWarnings("unchecked")
@@ -143,10 +173,11 @@ public class Tela extends javax.swing.JFrame
         txa_portfolio = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
         tfd_quantidade = new javax.swing.JTextField();
-        btn_atualizar_mercado = new javax.swing.JButton();
         label_dia = new javax.swing.JLabel();
+        label_relogio = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 1000));
 
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 36)); // NOI18N
         jLabel1.setText("Faria Lima Simulator");
@@ -157,6 +188,7 @@ public class Tela extends javax.swing.JFrame
         jLabel3.setFont(new java.awt.Font("sansserif", 0, 36)); // NOI18N
         jLabel3.setText("Portoflio");
 
+        txa_mercado.setEditable(false);
         txa_mercado.setColumns(20);
         txa_mercado.setRows(5);
         jScrollPane1.setViewportView(txa_mercado);
@@ -164,7 +196,6 @@ public class Tela extends javax.swing.JFrame
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
         jLabel4.setText("Comprar/Vender");
 
-        jLabel5.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
         jLabel5.setText("Codigo:");
 
         tfd_codigo.addActionListener(this::tfd_codigoActionPerformed);
@@ -178,41 +209,38 @@ public class Tela extends javax.swing.JFrame
         label_saldo.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
         label_saldo.setText("Saldo: R$XXXX.X");
 
+        txa_portfolio.setEditable(false);
         txa_portfolio.setColumns(20);
         txa_portfolio.setRows(5);
         jScrollPane2.setViewportView(txa_portfolio);
 
-        jLabel6.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
         jLabel6.setText("Quant.:");
 
         tfd_quantidade.addActionListener(this::tfd_quantidadeActionPerformed);
 
-        btn_atualizar_mercado.setText("Atualizar");
-
         label_dia.setText("Dia atual: 0");
+
+        label_relogio.setText("Relogio: 0/24h");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(264, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(310, 310, 310))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_atualizar_mercado)
-                                .addGap(214, 214, 214)
-                                .addComponent(label_dia)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(label_relogio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(label_dia)
+                                .addGap(19, 19, 19))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(162, 162, 162)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(label_saldo)
@@ -238,19 +266,26 @@ public class Tela extends javax.swing.JFrame
                                 .addComponent(btn_comprar)))
                         .addGap(30, 30, 30)))
                 .addGap(57, 57, 57))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(274, 274, 274))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel1)
+                .addGap(84, 84, 84)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(89, 89, 89)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(22, 22, 22)))
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -268,9 +303,9 @@ public class Tela extends javax.swing.JFrame
                         .addComponent(label_saldo))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn_atualizar_mercado)
-                            .addComponent(label_dia))
-                        .addGap(5, 5, 5)
+                            .addComponent(label_dia)
+                            .addComponent(label_relogio))
+                        .addGap(10, 10, 10)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(99, Short.MAX_VALUE))
         );
@@ -320,7 +355,6 @@ public class Tela extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_atualizar_mercado;
     private javax.swing.JButton btn_comprar;
     private javax.swing.JButton btn_vender;
     private javax.swing.JLabel jLabel1;
@@ -332,6 +366,7 @@ public class Tela extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel label_dia;
+    private javax.swing.JLabel label_relogio;
     private javax.swing.JLabel label_saldo;
     private javax.swing.JTextField tfd_codigo;
     private javax.swing.JTextField tfd_quantidade;

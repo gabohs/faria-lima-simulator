@@ -23,6 +23,16 @@ public class Simulador
         mercado.put("IFRS", new Acao("IFRS", "Instituto Federal do RS", 50.0f));
         mercado.put("UFFS", new Acao("UFFS", "Universidade Fed. Front. Sul.", 25.0f));
         mercado.put("AUTE", new Acao("AUTE", "Autentique Assinaturas", 7.0f));
+        mercado.put("CHIM", new Acao("CHIM", "Chimarrão Holdings S.A.", 12.5f));
+        mercado.put("GALP", new Acao("GALP", "Galpão CTG Tradição Viva", 33.8f));
+        mercado.put("ERVA", new Acao("ERVA", "Ervateira Erechim & Cia", 18.9f));
+        mercado.put("BAGE", new Acao("BAGE", "Bagual Motors Pickup Ltda", 89.4f));
+        mercado.put("PAMP", new Acao("PAMP", "Pampa Agro Soluções", 64.2f));
+        mercado.put("CUCA", new Acao("CUCA", "Cuca Caseira Delivery", 9.3f));
+        mercado.put("TCHE", new Acao("TCHE", "Tchê Tech Startups RS", 142.7f));
+        mercado.put("RODE", new Acao("RODE", "Rodeio Digital Games", 27.6f));
+        mercado.put("XIMI", new Acao("XIMI", "Ximia Lab Biotecnologia", 55.1f));
+        mercado.put("GRES", new Acao("GRES", "Grêmio do Sul Esportes", 73.0f)); 
     }
     
     public void atualizarMercado()
@@ -57,6 +67,8 @@ public class Simulador
         this.portfolio.put(
             a.getCodigo(), portfolio.getOrDefault(codigo, 0) + quantidade
         );
+        
+        JOptionPane.showMessageDialog(null, "Compra Realizada");
     }
     
     public void vender(String codigo, int quantidade)
