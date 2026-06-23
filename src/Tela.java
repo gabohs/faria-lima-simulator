@@ -87,11 +87,35 @@ public class Tela extends javax.swing.JFrame
             }
         });
         
-        btn_vender.addActionListener( new ActionListener(){
+        // VENDER
+        btn_vender.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                
+                try
+                {
+                    String cod = tfd_codigo.getText();
+                    Integer quant = Integer.parseInt(tfd_quantidade.getText());
+                    
+                    if (cod.isEmpty())
+                        throw new Exception("O campo codigo nao pode ser nulo");
+                    
+                    if (tfd_quantidade.getText().isEmpty())
+                        throw new Exception("O campo quantidade nao pode ser nulo");
+                        
+                    if (quant < 1)
+                        throw new Exception("A quantidade deve ser maior que 1");
+                    
+                    simulador.vender(cod, quant);
+                }
+                catch (Exception ex)
+                {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+                finally
+                {
+                    label_saldo.setText("Saldo: R$" + String.format("%.2f", simulador.getSaldo()));
+                }
             }
         });
         
