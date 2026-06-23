@@ -14,6 +14,17 @@ public class Tela extends javax.swing.JFrame
         label_saldo.setText("Saldo: R$" + String.format("%.2f", simulador.getSaldo()));
         label_dia.setText("Dia atual: " + simulador.getDiaAtual());
     }
+    
+    private void mostrar_portfolio()
+    {
+        txa_portfolio.setText("");
+        
+        for (Map.Entry<String, Integer> e : simulador.getPortfolio().entrySet())
+        {
+            String texto = e.getKey() + ": " + e.getValue();
+            txa_portfolio.append(texto + "\n");
+        }
+    }
 
     public Tela() 
     {
@@ -22,7 +33,6 @@ public class Tela extends javax.swing.JFrame
         simulador.inicializarMercado();
         
         inicializar_UI();
-        
         
         // ATUALIZAR MERCADO
         btn_atualizar_mercado.addActionListener( new ActionListener(){
@@ -71,7 +81,8 @@ public class Tela extends javax.swing.JFrame
                 }
                 finally
                 {
-                     label_saldo.setText("Saldo: R$" + String.format("%.2f", simulador.getSaldo()));
+                    mostrar_portfolio();
+                    label_saldo.setText("Saldo: R$" + String.format("%.2f", simulador.getSaldo()));
                 }
             }
         });
@@ -83,6 +94,9 @@ public class Tela extends javax.swing.JFrame
                 
             }
         });
+        
+        
+        
                 
     }
 
