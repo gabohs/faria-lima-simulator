@@ -18,7 +18,7 @@ public class Acao
         double min = ThreadLocalRandom.current().nextDouble(-6.7f, -0.1f);
         double max = ThreadLocalRandom.current().nextDouble(0.0f, 6.7f);
         
-        double mudanca = ThreadLocalRandom.current().nextDouble(min, max + 1);
+        double mudanca = ThreadLocalRandom.current().nextDouble(min, max + 1.0f);
         
         double fator_mudanca = 1 + mudanca / 100;
         this.preco_atual *= fator_mudanca;  

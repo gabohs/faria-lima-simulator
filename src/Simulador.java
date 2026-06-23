@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.swing.JOptionPane;
 
 public class Simulador 
 {
@@ -12,7 +13,7 @@ public class Simulador
     public Simulador(double saldo)
     {
         this.saldo     = saldo;
-        this.dia_atual = 1;
+        this.dia_atual = 0;
         this.mercado   = new HashMap<>();
         this.portfolio = new TreeMap<>();
     }
@@ -40,14 +41,14 @@ public class Simulador
         
         if (a == null) 
         {
-            System.out.println("Acao nao encontrada");
+            JOptionPane.showMessageDialog(null, "Acao nula");
             return;
         }
         
         double valor_total = a.getPreco() * quantidade;
         if (this.saldo < valor_total)
         {
-            System.out.println("Saldo insuficiente");
+            JOptionPane.showMessageDialog(null, "Saldo insuficiente");
             return;
         }
         
@@ -64,14 +65,14 @@ public class Simulador
         
         if (!this.portfolio.containsKey(codigo))
         {
-            System.out.println("Acao nao encontrada no seu portfolio");
+            JOptionPane.showMessageDialog(null, "Acao nao encontrada no seu portfolio");
             return;
         }
         
         int quant_atual = this.portfolio.get(codigo);
         if (quantidade > quant_atual)
         {
-            System.out.println("Voce nao pode vender mais acoes do que possui");
+            JOptionPane.showMessageDialog(null, "Voce nao pode vender mais acoes do que possui");
             return;
         }
         
@@ -85,6 +86,11 @@ public class Simulador
         else
             portfolio.put(codigo, quant_atual - quantidade);
         
-        System.out.println("Venda realizada");
+        JOptionPane.showMessageDialog(null, "Venda Realizada");
     }
+    
+    public double getSaldo() { return this.saldo; }
+    public int getDiaAtual() { return this.dia_atual; }
+    public Map<String, Acao> getMercado() { return this.mercado; }
+    public Map<String, Integer> getPortfolio() { return this.portfolio; }
 }
